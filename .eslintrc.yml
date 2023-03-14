@@ -1,14 +1,23 @@
 env:
   browser: true
   es2021: true
+globals:
+  jsx: readonly
 extends:
-  - plugin:react/recommended
+  - eslint:recommended
   - standard-with-typescript
+  - plugin:react/recommended
+  - plugin:react/jsx-runtime
+  - plugin:unicorn/recommended
+  - plugin:prettier/recommended
 overrides: []
 parserOptions:
   project: tsconfig.json
   ecmaVersion: latest
   sourceType: module
 plugins:
+  - prettier
   - react
-rules: {}
+rules: 
+  prettier/prettier: error
+
