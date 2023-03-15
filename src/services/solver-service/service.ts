@@ -1,11 +1,11 @@
-import axios from "axios";
-import { type SolverResult } from "./api";
+import { api } from "./api";
+import { type SolverResult } from "./response";
 import { type ApiMessage } from "../../api";
 
 export const SolverService = {
   getResults: async (): Promise<ApiMessage<SolverResult[]>> => {
     try {
-      const response = await axios.get("/solver_results");
+      const response = await api.get("/solver-results");
       return response.data();
     } catch (error: any) {
       return {

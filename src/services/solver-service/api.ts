@@ -1,5 +1,10 @@
-export interface SolverResult {
-  execution_time: number;
-  chessboard_size: number;
-  number_of_solutions: number;
-}
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: process.env.REACT_APP_SOLVER_API_URL ?? "http://127.0.0.1:3001",
+  timeout: Number.parseInt(process.env.REACT_APP_API_TIMEOUT ?? "1000"),
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Content-Type": "application/json;charset=utf-8",
+  },
+});

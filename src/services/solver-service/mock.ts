@@ -1,10 +1,9 @@
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import type MockAdapter from "axios-mock-adapter";
 
-import { type SolverResult } from "./api";
 import { type ApiMessage } from "../../api";
+import { type SolverResult } from "./response";
 
-export const mockSolverResults: SolverResult[] = [
+const mockSolverResults: SolverResult[] = [
   {
     chessboard_size: 4,
     number_of_solutions: 2,
@@ -57,10 +56,17 @@ export const mockSolverResults: SolverResult[] = [
   },
 ];
 
-const mock = new MockAdapter(axios, { delayResponse: 2000 });
-mock.onGet("/solver_results").reply(200, (): ApiMessage<SolverResult[]> => {
-  return {
-    data: mockSolverResults,
-    status: "successful",
-  };
-});
+function injectMockHandlers(mock: MockAdapter): void {
+  mock.onGet("/solver-results").reply(
+    200,
+    (): ApiMessage<SolverResult[]> => ({
+      data: mockSolverResults,
+      status: "successful",
+    })
+  );
+}
+
+export const SolverApiMock = {
+  injectMockHandlers,
+  data: mockSolverResults,
+};
