@@ -23,7 +23,6 @@ export function NotificationSnackbar(): JSX.Element {
 
   React.useEffect(() => {
     if (!open) {
-      console.log(pushNotificationsHook.notifications);
       const notification = pushNotificationsHook.consumeNotification();
       if (notification !== undefined) {
         setTimeout(() => {
