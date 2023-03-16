@@ -12,7 +12,7 @@ interface SolverDataGridRow extends Omit<SolverResult, "execution_time"> {
 
 type SolverResultsDataGridColumn = ModelDataGridColumn<SolverDataGridRow>;
 
-function formatSeconds(seconds: number): string {
+export function formatSeconds(seconds: number): string {
   if (seconds < 1) {
     return `${seconds * 1000} ms`;
   }
