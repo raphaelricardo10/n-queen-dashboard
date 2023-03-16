@@ -1,6 +1,6 @@
 import { api } from "./api";
 import { type SolverResult } from "./response";
-import { type ApiMessage } from "../../api";
+import { type ApiMessage } from "../../protocols";
 
 export const SolverService = {
   getResults: async (): Promise<ApiMessage<SolverResult[]>> => {

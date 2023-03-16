@@ -1,5 +1,5 @@
 import React from "react";
-import { type ApiMessage } from "../../api";
+import { type ApiMessage } from "../../protocols";
 import {
   SolverService,
   type SolverResult,

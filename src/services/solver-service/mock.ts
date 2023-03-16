@@ -1,6 +1,6 @@
 import type MockAdapter from "axios-mock-adapter";
 
-import { type ApiMessage } from "../../api";
+import { type ApiMessage } from "../../protocols";
 import { type SolverResult } from "./response";
 
 const mockSolverResults: SolverResult[] = [
