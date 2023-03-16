@@ -28,7 +28,6 @@ export function usePushNotifications(): PushNotificationsHook {
       setIsConnected(false);
     };
     const onNotification = (notification: PushNotification): void => {
-      console.log(notification);
       setLastNotification(notification);
     };
 
