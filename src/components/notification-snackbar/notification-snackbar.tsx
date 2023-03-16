@@ -3,15 +3,36 @@ import { Alert } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { usePushNotifications } from "../../hooks/use-push-notifications/hook";
+import {
+  usePushNotifications,
+  type PushNotification,
+} from "../../hooks/use-push-notifications/hook";
 
 export function NotificationSnackbar(): JSX.Element {
   const pushNotificationsHook = usePushNotifications();
   const [open, setOpen] = React.useState(false);
+  const [lastNotification, setLastNotification] =
+    React.useState<PushNotification>();
 
   React.useEffect(() => {
-    setOpen(true);
-  }, [pushNotificationsHook.lastNotification]);
+    if (!open) {
+      setOpen(true);
+      setLastNotification(pushNotificationsHook.consumeNotification());
+    }
+  }, [pushNotificationsHook.notifications]);
+
+  React.useEffect(() => {
+    if (!open) {
+      console.log(pushNotificationsHook.notifications);
+      const notification = pushNotificationsHook.consumeNotification();
+      if (notification !== undefined) {
+        setTimeout(() => {
+          setLastNotification(notification);
+          setOpen(true);
+        }, 1000);
+      }
+    }
+  }, [open]);
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -39,11 +60,8 @@ export function NotificationSnackbar(): JSX.Element {
 
   return (
     <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert
-        severity={pushNotificationsHook.lastNotification?.severity}
-        action={action}
-      >
-        {pushNotificationsHook.lastNotification?.message}
+      <Alert severity={lastNotification?.severity} action={action}>
+        {lastNotification?.message}
       </Alert>
     </Snackbar>
   );
