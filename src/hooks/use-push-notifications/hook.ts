@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 
 export interface PushNotificationsHook {
   isConnected: boolean;
-  lastNotification?: PushNotification;
+  notifications: PushNotification[];
+  consumeNotification: () => PushNotification | undefined;
 }
 
 export interface PushNotification {
@@ -13,12 +14,24 @@ export interface PushNotification {
 
 export function usePushNotifications(): PushNotificationsHook {
   const [isConnected, setIsConnected] = React.useState(false);
-  const [lastNotification, setLastNotification] =
-    React.useState<PushNotification>();
+  const [notifications, setNotifications] = React.useState<PushNotification[]>(
+    []
+  );
 
   const socket = io(
     process.env.REACT_APP_NOTIFICATIONS_URI ?? "ws://127.0.0.1:3002"
   );
+
+  function addIncomingNotification(notification: PushNotification): void {
+    setNotifications((lastNotifications) => [
+      ...lastNotifications,
+      notification,
+    ]);
+  }
+
+  function consumeNotification(): PushNotification | undefined {
+    return notifications.shift();
+  }
 
   React.useEffect(() => {
     const onConnect = (): void => {
@@ -27,23 +40,21 @@ export function usePushNotifications(): PushNotificationsHook {
     const onDisconnect = (): void => {
       setIsConnected(false);
     };
-    const onNotification = (notification: PushNotification): void => {
-      setLastNotification(notification);
-    };
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-    socket.on("notifications", setLastNotification);
+    socket.on("notifications", addIncomingNotification);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      socket.off("notifications", onNotification);
+      socket.off("notifications", addIncomingNotification);
     };
   }, []);
 
   return {
     isConnected,
-    lastNotification,
+    notifications,
+    consumeNotification,
   };
 }
