@@ -17,7 +17,7 @@ function formatSeconds(seconds: number): string {
     return `${seconds * 1000} ms`;
   }
 
-  if (seconds > 60) {
+  if (seconds >= 60) {
     return `${seconds / 60} min`;
   }
 
