@@ -1,1 +1,4 @@
-export { SolverResultsDataGrid as NQueensDataGrid } from "./datagrid";
+export {
+  SolverResultsDataGrid,
+  type SolverResultsDataGridProperties,
+} from "./datagrid";
