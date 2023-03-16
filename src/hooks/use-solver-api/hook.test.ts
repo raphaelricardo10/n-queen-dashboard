@@ -41,7 +41,7 @@ describe("solver api hook", () => {
   });
 
   it("should be initialized with in_progress state", async () => {
-    expect(hook.result.current.solverResults.status).toBe("in_progress");
+    expect(hook.result.current.status).toBe("in_progress");
   });
 
   it("should return the api data", async () => {
@@ -50,7 +50,7 @@ describe("solver api hook", () => {
     });
 
     await waitFor(() => {
-      expect(hook.result.current.solverResults.status).toBe("successful");
+      expect(hook.result.current.status).toBe("successful");
     });
   });
 });

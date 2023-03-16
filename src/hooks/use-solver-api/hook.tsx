@@ -5,14 +5,10 @@ import {
   type SolverResult,
 } from "../../services/solver-service";
 
-export interface SolverApiHook {
-  solverResults: ApiMessage<SolverResult[]>;
-}
+export type SolverApiHook = ApiMessage<SolverResult[]>;
 
 export function useSolverApi(): SolverApiHook {
-  const [solverResults, setResults] = React.useState<
-    ApiMessage<SolverResult[]>
-  >({
+  const [results, setResults] = React.useState<ApiMessage<SolverResult[]>>({
     data: [],
     status: "in_progress",
   });
@@ -24,5 +20,5 @@ export function useSolverApi(): SolverApiHook {
     void getResults();
   }, []);
 
-  return { solverResults };
+  return results;
 }

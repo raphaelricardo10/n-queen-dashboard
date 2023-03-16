@@ -1,9 +1,9 @@
 import { useSolverApi } from "./hooks/use-solver-api";
-import { SolverResultsDataGrid } from "./components/solver-results-datagrid/datagrid";
+import { SolverResultsDataGrid } from "./components/solver-results-datagrid";
 
 function App(): JSX.Element {
-  const hook = useSolverApi();
-  return <SolverResultsDataGrid rows={hook.solverResults.data} />;
+  const solverApiHook = useSolverApi();
+  return <SolverResultsDataGrid rows={solverApiHook.data} />;
 }
 
 export default App;
