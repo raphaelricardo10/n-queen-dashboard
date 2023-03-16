@@ -6,12 +6,11 @@ export const SolverService = {
   getResults: async (): Promise<ApiMessage<SolverResult[]>> => {
     try {
       const response = await api.get("/solver-results");
-
-      if (typeof response.data === "function") {
-        return response.data();
-      }
-
-      return response.data;
+      return {
+        status: "successful",
+        data:
+          typeof response.data === "function" ? response.data() : response.data,
+      };
     } catch (error: any) {
       console.error(error);
       return {

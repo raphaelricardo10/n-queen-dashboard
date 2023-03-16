@@ -1,6 +1,4 @@
 import type MockAdapter from "axios-mock-adapter";
-
-import { type ApiMessage } from "../../protocols";
 import { type SolverResult } from "./response";
 
 const mockSolverResults: SolverResult[] = [
@@ -57,13 +55,9 @@ const mockSolverResults: SolverResult[] = [
 ];
 
 function injectMockHandlers(mock: MockAdapter): void {
-  mock.onGet("/solver-results").reply(
-    200,
-    (): ApiMessage<SolverResult[]> => ({
-      data: mockSolverResults,
-      status: "successful",
-    })
-  );
+  mock
+    .onGet("/solver-results")
+    .reply(200, (): SolverResult[] => mockSolverResults);
 }
 
 export const SolverApiMock = {
