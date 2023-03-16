@@ -1,41 +1,43 @@
-import { renderHook, RenderHookResult, waitFor } from "@testing-library/react";
-import { SolverApiHook, useSolverApi } from "./hook";
-import { SolverResult, SolverService } from "../../services/solver-service";
+import {
+  renderHook,
+  type RenderHookResult,
+  waitFor,
+} from "@testing-library/react";
+import { type SolverApiHook, useSolverApi } from "./hook";
+import {
+  type SolverResult,
+  SolverService,
+} from "../../services/solver-service";
 import { act } from "react-dom/test-utils";
 
 describe("solver api hook", () => {
   const mockResult: SolverResult[] = [
     { number_of_solutions: 2, chessboard_size: 4, execution_time: 0.1 },
   ];
-  let hook: RenderHookResult<SolverApiHook, {}>;
-  beforeAll(() => {
+  let hook: RenderHookResult<SolverApiHook, undefined>;
+  beforeEach(async () => {
     jest.useFakeTimers();
     jest.spyOn(SolverService, "getResults").mockImplementation(
-      () =>
-        new Promise((resolve, reject) => {
-          setTimeout(
-            () =>
-              resolve({
-                data: mockResult,
-                status: "successful",
-              }),
-            5000
-          );
+      async () =>
+        await new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve({
+              data: mockResult,
+              status: "successful",
+            });
+          }, 5000);
         })
     );
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-    jest.restoreAllMocks();
-  });
-
-  beforeEach(() => {
     hook = renderHook(useSolverApi);
+    await waitFor(() => {
+      expect(hook.result.current).toBeDefined();
+    });
   });
 
   afterEach(() => {
     hook.unmount();
+    jest.useRealTimers();
+    jest.resetAllMocks();
   });
 
   it("should be initialized with in_progress state", async () => {
