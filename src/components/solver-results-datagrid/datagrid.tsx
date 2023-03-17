@@ -14,6 +14,7 @@ export function SolverResultsDataGrid({
     <Box sx={{ width: "100%" }}>
       <DataGrid
         rows={rows}
+        sx={{ m: 2, p: 1 }}
         getRowId={(row) => row.chessboard_size}
         columns={columns}
         initialState={{
