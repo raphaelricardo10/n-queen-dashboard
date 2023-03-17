@@ -4,6 +4,7 @@ COPY package.json .
 COPY yarn.lock .
 RUN yarn
 COPY . .
+ENV NODE_ENV=production
 RUN yarn build
 
 FROM nginx:1.23
