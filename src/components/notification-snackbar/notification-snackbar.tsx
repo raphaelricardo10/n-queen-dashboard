@@ -8,30 +8,44 @@ import {
   type PushNotification,
 } from "../../hooks/use-push-notifications/hook";
 
+interface NotificationSnackbarState {
+  open: boolean;
+  lastNotification?: PushNotification;
+}
+
 export function NotificationSnackbar(): JSX.Element {
   const pushNotificationsHook = usePushNotifications();
-  const [open, setOpen] = React.useState(false);
-  const [lastNotification, setLastNotification] =
-    React.useState<PushNotification>();
+  const [state, setState] = React.useState<NotificationSnackbarState>({
+    open: false,
+  });
 
   React.useEffect(() => {
-    if (!open) {
-      setOpen(true);
-      setLastNotification(pushNotificationsHook.consumeNotification());
+    if (!state.open) {
+      setState({
+        open: true,
+        lastNotification: pushNotificationsHook.consumeNotification(),
+      });
     }
   }, [pushNotificationsHook.notifications]);
 
   React.useEffect(() => {
-    if (!open) {
-      const notification = pushNotificationsHook.consumeNotification();
-      if (notification !== undefined) {
+    if (!state.open) {
+      const lastNotification = pushNotificationsHook.consumeNotification();
+      if (lastNotification !== undefined) {
         setTimeout(() => {
-          setLastNotification(notification);
-          setOpen(true);
+          setState({
+            open: true,
+            lastNotification,
+          });
         }, 1000);
+        return;
       }
     }
-  }, [open]);
+
+    if (state.lastNotification === undefined) {
+      setState({ ...state, open: false });
+    }
+  }, [state.open]);
 
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -41,7 +55,7 @@ export function NotificationSnackbar(): JSX.Element {
       return;
     }
 
-    setOpen(false);
+    setState({ ...state, open: false });
   };
 
   const action = (
@@ -58,9 +72,9 @@ export function NotificationSnackbar(): JSX.Element {
   );
 
   return (
-    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-      <Alert severity={lastNotification?.severity} action={action}>
-        {lastNotification?.message}
+    <Snackbar open={state.open} autoHideDuration={3000} onClose={handleClose}>
+      <Alert severity={state.lastNotification?.severity} action={action}>
+        {state.lastNotification?.message}
       </Alert>
     </Snackbar>
   );
