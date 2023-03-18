@@ -19,7 +19,7 @@ export function usePushNotifications(): PushNotificationsHook {
   );
 
   const socket = io(
-    process.env.REACT_APP_NOTIFICATIONS_URI ?? "ws://127.0.0.1:3002",
+    process.env.REACT_APP_WS_URI ?? "ws://127.0.0.1:3002",
     {
       path: "/ws/",
     }
