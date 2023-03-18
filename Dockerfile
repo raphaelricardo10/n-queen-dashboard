@@ -17,7 +17,7 @@ ENV REACT_APP_NOTIFICATIONS_URI=${REACT_APP_NOTIFICATIONS_URI}
 ENV REACT_APP_API_TIMEOUT=${REACT_APP_API_TIMEOUT}
 RUN yarn build
 
-FROM nginx:1.23
+FROM nginx:1.23-alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=builder /app/build .
