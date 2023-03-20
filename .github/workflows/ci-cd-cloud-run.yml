@@ -26,7 +26,6 @@ jobs:
         run: |
           docker build \
             --build-arg REACT_APP_SOLVER_API_URL=${{ secrets.SOLVER_API_URL }} \
-            --build-arg REACT_APP_WS_URI=${{ secrets.WS_URI }} \
             --build-arg REACT_APP_API_TIMEOUT=${{ secrets.API_TIMEOUT }} \
             -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.DOCKER_IMAGE }}:latest .
 
