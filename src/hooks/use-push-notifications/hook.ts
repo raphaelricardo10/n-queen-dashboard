@@ -20,8 +20,8 @@ export function usePushNotifications(): PushNotificationsHook {
 
   const socket = React.useMemo(
     () =>
-      io(process.env.REACT_APP_WS_URI ?? "ws://127.0.0.1:3002", {
-        path: "/ws/",
+      io(process.env.REACT_APP_SOLVER_API_URL ?? "ws://127.0.0.1:3001", {
+        path: "/ws/notifications/",
       }),
     []
   );
